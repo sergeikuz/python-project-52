@@ -7,9 +7,11 @@ render-start:
 install:
 	uv sync
 
+# Convert static asset files
 collectstatic:
-	uv run python3 manage.py collectstatic --noinput
+	uv run python3 manage.py collectstatic --no-input
 
+# Apply any outstanding database migrations
 migrate:
 	uv run python3 manage.py migrate
 
