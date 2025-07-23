@@ -15,5 +15,8 @@ collectstatic:
 migrate:
 	uv run python3 manage.py migrate
 
+lint:
+	uv run flake8 task_manager
+
 run:
 	uv run python3 manage.py runserver
