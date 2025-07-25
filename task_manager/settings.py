@@ -43,13 +43,14 @@ if RENDER_EXTERNAL_HOSTNAME:
 # Application definition
 
 INSTALLED_APPS = [
+    'task_manager',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.bootstrap5',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -120,7 +121,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
+LANGUAGES = [
+    ('en', 'English'),
+    ('ru', 'Russian'),
+]
 
 TIME_ZONE = 'UTC'
 
