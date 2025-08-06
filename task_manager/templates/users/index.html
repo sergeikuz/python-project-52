@@ -1,3 +1,14 @@
-<h1>About Users шаблон лежит в template/users/index.html</h1>
-<p>Эксперименты с Django на Хекслете</p>
-<p>{{ tags|join:', ' }}</p>
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+	<h1>About Users шаблон лежит в template/users/index.html</h1>
+	<p>Эксперименты с Django на Хекслете</p>
+    <h1>List of users:</h1>
+    {% for user in users %}
+    <a class="nav-link" href="{% url 'users:user_show' id=user.id %}"><h2>{{ user.first_name }}</h2>
+	    <div>{{ user.last_name }}</div></a>
+    {% endfor %}
+{% endblock %}

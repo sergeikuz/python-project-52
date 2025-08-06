@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+     <h1>{{ user.first_name }}</h1>
+    <div>{{ user.last_name }}</div>
+{% endblock %}
