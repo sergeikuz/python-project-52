@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+<form action="{% url 'users:user_create' %}" method="post">
+    {% csrf_token %}
+    <table border="1">
+       {{ form }}
+    </table>
+    <input type="submit" value="Сохранить">
+</form>
+{% endblock content %}

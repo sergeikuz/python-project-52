@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
 from .models import Person
+from .forms import UserForm
 
 
 
@@ -28,6 +29,18 @@ class UserView(View):
             },
         )
 
+class LoginUserView(View):
+    def post(self, request, *args, **kwargs):
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('users:index')
+
+    def get(self, request, *args, **kwargs):
+        form = UserForm()
+        return render(
+            request, "users/registration.html", {"form": form}
+        )
 
 def home(request):
     return redirect(reverse('index'))
