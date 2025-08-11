@@ -9,6 +9,6 @@
     <h1>List of users:</h1>
     {% for user in users %}
     <a class="nav-link" href="{% url 'users:user_show' id=user.id %}"><h2>{{ user.first_name }}</h2>
-	    <div>{{ user.last_name }}</div></a>
+	    <div>{{ user.last_name }} age: {{ user.age }}</div></a>
     {% endfor %}
 {% endblock %}

@@ -35,6 +35,8 @@ class LoginUserView(View):
         if form.is_valid():
             form.save()
             return redirect('users:index')
+        else:
+            return render(request, 'users/registration.html', {"form", form})
 
     def get(self, request, *args, **kwargs):
         form = UserForm()
