@@ -44,6 +44,26 @@ class LoginUserView(View):
             request, "users/registration.html", {"form": form}
         )
 
+class UserFormEditView(View):
+    def get(self, request, *args, **kwargs):
+        user_id = kwargs.get("id")
+        user = Person.objects.get(id=user_id)
+        form = UserForm(instance=user)
+        return render(
+                request, "users/update.html", {"form": form, "user_id": user_id}
+        )
+    def post(self, request, *args, **kwargs):
+        user_id = kwargs.get("id")
+        user = Person.objects.get(id=user_id)
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+        return render(
+                request, "users/update.html", {"form": form, "user_id": user_id}
+        )
+
+
 def home(request):
     return redirect(reverse('index'))
 
