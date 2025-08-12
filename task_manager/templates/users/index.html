@@ -11,5 +11,9 @@
     <a class="nav-link" href="{% url 'users:user_show' id=user.id %}"><h2>{{ user.first_name }}</h2>
 	    <div>{{ user.last_name }} age: {{ user.age }}</div></a>
     <a class="nav-link" href="{% url 'users:user_update' id=user.id %}">Edit user</a>
+     <form action="{% url 'users:user_delete' user.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Удалить">
+</form>
     {% endfor %}
 {% endblock %}

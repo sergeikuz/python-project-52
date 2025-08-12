@@ -6,6 +6,7 @@ from task_manager.users.views import (
         UserView,
         LoginUserView,
         UserFormEditView,
+        UserFormDeleteView,
 )
 
 app_name = 'users'  # Это указывает, что пространство имен для этого набора путей будет 'users'
@@ -15,4 +16,5 @@ urlpatterns = [
     path("<int:id>/", UserView.as_view(), name="user_show"),
     path("create/", LoginUserView.as_view(), name="user_create"),
     path("<int:id>/edit/", UserFormEditView.as_view(), name="user_update"),
+    path("<int:id>/delete/", UserFormDeleteView.as_view(), name="user_delete"),
 ]

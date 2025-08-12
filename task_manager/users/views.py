@@ -64,6 +64,15 @@ class UserFormEditView(View):
         )
 
 
+class UserFormDeleteView(View):
+    def post(self, request, *args, **kwargs):
+        user_id = kwargs.get('id')
+        user = Person.objects.get(id=user_id)
+        if user:
+            user.delete()
+        return redirect('index')
+
+
 def home(request):
     return redirect(reverse('index'))
 
