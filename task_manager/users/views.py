@@ -3,78 +3,51 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
-from .models import Person
-from .forms import UserForm
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from .forms import CustomUserCreationForm, CustomUserChangeForm
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import UpdateView
+from django.views.generic import ListView
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.contrib.auth import logout
 
 
+class UserListView(ListView):
+    model = User
+    template_name = 'users/user_list.html'
+    context_object_name = 'users'
 
-class IndexView(View):
-    def get(self, request, *args, **kwargs):
-        users = Person.objects.all()[:15]  # или иной способ получить пользователей
-        return render(
-            request,
-            "users/index.html",
-            context={"users": users},  # замените соответствующим образом
-        )
+class UserCreateView(CreateView):
+    form_class = CustomUserCreationForm
+    template_name = 'users/user_form.html'
+    success_url = reverse_lazy('login')
 
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    fields = ['username', 'first_name', 'last_name', 'email']
+    template_name = 'users/user_form.html'
+    success_url = reverse_lazy('user_list')  # Направляет на страницу профиля после обновления
 
-class UserView(View):
-    def get(self, request, *args, **kwargs):
-        user = get_object_or_404(Person, id=kwargs["id"])
-        return render(
-            request,
-            "users/show.html",
-            context={
-                "user": user,
-            },
-        )
+    def get_object(self, queryset=None):
+        # Возвращает только текущего пользователя
+        return self.request.user
 
-class LoginUserView(View):
-    def post(self, request, *args, **kwargs):
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('users:index')
-        else:
-            return render(request, 'users/registration.html', {"form", form})
+class UserDeleteView(LoginRequiredMixin, DeleteView):
+    model = User
+    template_name = 'users/user_confirm_delete.html'
+    success_url = reverse_lazy('index')  # Или на любую другую страницу после удаления
 
-    def get(self, request, *args, **kwargs):
-        form = UserForm()
-        return render(
-            request, "users/registration.html", {"form": form}
-        )
-
-class UserFormEditView(View):
-    def get(self, request, *args, **kwargs):
-        user_id = kwargs.get("id")
-        user = Person.objects.get(id=user_id)
-        form = UserForm(instance=user)
-        return render(
-                request, "users/update.html", {"form": form, "user_id": user_id}
-        )
-    def post(self, request, *args, **kwargs):
-        user_id = kwargs.get("id")
-        user = Person.objects.get(id=user_id)
-        form = UserForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            return redirect("index")
-        return render(
-                request, "users/update.html", {"form": form, "user_id": user_id}
-        )
-
-
-class UserFormDeleteView(View):
-    def post(self, request, *args, **kwargs):
-        user_id = kwargs.get('id')
-        user = Person.objects.get(id=user_id)
-        if user:
-            user.delete()
-        return redirect('index')
-
-
-def home(request):
-    return redirect(reverse('index'))
+    def get_object(self, queryset=None):
+        # Позволяет удалять только свои данные
+        return self.request.user
+    
+    def delete(self, request, *args, **kwargs):
+        # При удалении пользователя, выходим из системы
+        obj = self.get_object()
+        logout(self.request)
+        return super().delete(request, *args, **kwargs)
 
 
 # Create your views here.

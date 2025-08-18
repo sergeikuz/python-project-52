@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+    {% for user in users %}
+    <h2>{{ user.first_name }}</h2>
+      <div>{{ user.last_name }}</div>
+    <a class="nav-link" href="{% url 'users:user_update' user.id %}">Edit user</a>
+     <form action="{% url 'users:user_delete' user.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete">
+</form>
+    {% endfor %}
+{% endblock %}

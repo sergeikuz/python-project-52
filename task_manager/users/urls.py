@@ -1,20 +1,11 @@
 from django.urls import path
-
-from . import views
-from task_manager.users.views import (
-        IndexView,
-        UserView,
-        LoginUserView,
-        UserFormEditView,
-        UserFormDeleteView,
-)
+from .views import UserListView, UserCreateView, UserUpdateView, UserDeleteView
 
 app_name = 'users'  # Это указывает, что пространство имен для этого набора путей будет 'users'
 
 urlpatterns = [
-    path("", IndexView.as_view(), name="index"),
-    path("<int:id>/", UserView.as_view(), name="user_show"),
-    path("create/", LoginUserView.as_view(), name="user_create"),
-    path("<int:id>/edit/", UserFormEditView.as_view(), name="user_update"),
-    path("<int:id>/delete/", UserFormDeleteView.as_view(), name="user_delete"),
+    path('', UserListView.as_view(), name='user_list'),
+    path('create/', UserCreateView.as_view(), name='user_create'),
+    path('<int:pk>/update/', UserUpdateView.as_view(), name='user_update'),
+    path('<int:pk>/delete/', UserDeleteView.as_view(), name='user_delete'),
 ]
