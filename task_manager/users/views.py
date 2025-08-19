@@ -7,11 +7,12 @@ from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import UpdateView
 from django.views.generic import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth import logout
+from django.contrib import messages
 
 
 class UserListView(ListView):
@@ -24,30 +25,39 @@ class UserCreateView(CreateView):
     template_name = 'users/user_form.html'
     success_url = reverse_lazy('login')
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Account created successfully! You can now log in.")
+        return response
+
+class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = User
     fields = ['username', 'first_name', 'last_name', 'email']
     template_name = 'users/user_form.html'
-    success_url = reverse_lazy('user_list')  # Направляет на страницу профиля после обновления
+    success_url = reverse_lazy('users:user_list')  # Направляет на страницу профиля после обновления
 
-    def get_object(self, queryset=None):
-        # Возвращает только текущего пользователя
-        return self.request.user
+    def test_func(self): # Ограничивает доступ для редактирования только своим профилем
+        user = self.get_object()
+        return self.request.user == user
 
-class UserDeleteView(LoginRequiredMixin, DeleteView):
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Profile updated successfully!")
+        return response
+
+class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = User
     template_name = 'users/user_confirm_delete.html'
     success_url = reverse_lazy('index')  # Или на любую другую страницу после удаления
 
-    def get_object(self, queryset=None):
-        # Позволяет удалять только свои данные
-        return self.request.user
+    def test_func(self): # Ограничивает доступ для удаления только своим профилем
+        user = self.get_object()
+        return self.request.user == user
     
     def delete(self, request, *args, **kwargs):
-        # При удалении пользователя, выходим из системы
-        obj = self.get_object()
-        logout(self.request)
-        return super().delete(request, *args, **kwargs)
+        messages.success(self.request, "Profile deleted successfully.")
+        response = super().delete(request, *args, **kwargs)
+        if self.request.user.is_authenticated:
+            logout(request)
+        return response
 
-
-# Create your views here.
