@@ -48,10 +48,12 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = User
     template_name = 'users/user_confirm_delete.html'
-    success_url = reverse_lazy('index')  # Или на любую другую страницу после удаления
+    success_url = reverse_lazy('users:user_list')  # Или на любую другую страницу после удаления
 
     def test_func(self): # Ограничивает доступ для удаления только своим профилем
         user = self.get_object()
+        if self.request.user != user:
+            messages.warning(self.request, "You do not have permission to edit this user.")
         return self.request.user == user
     
     def delete(self, request, *args, **kwargs):

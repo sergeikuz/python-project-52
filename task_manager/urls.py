@@ -27,6 +27,5 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('accounts/', include('django.contrib.auth.urls')),  # Включает все стандартные URL для аутентификации
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
 ]
