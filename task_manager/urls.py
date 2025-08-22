@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Обязательно используйте include, чтобы указать namespace
     path('users/', include(('task_manager.users.urls', 'users'), namespace='users')),
+    path('statuses/', include(('task_manager.statuses.urls', 'statuses'), namespace='statuses')),
     path('', views.IndexView.as_view(), name='index'),
     path('accounts/', include('django.contrib.auth.urls')),  # Включает все стандартные URL для аутентификации
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
