@@ -11,7 +11,7 @@ from task_manager.mixins import (
 
 class StatusesIndexView(CustomLoginRequiredMixin, ListView):
     model = Status
-    template_name = "statuses/index.html"
+    template_name = "statuses/statuses_index.html"
     context_object_name = "statuses"
 
 
@@ -28,6 +28,7 @@ class StatusesCreateView(CustomLoginRequiredMixin, CreateView):
 
 class StatusesUpdateView(CustomLoginRequiredMixin, UpdateView):
     form_class = StatusForm
+    model = Status
     template_name = 'statuses/statuses_form.html'
     success_url = reverse_lazy("statuses:statuses_index")
     success_message = _("The status was updated successfully")

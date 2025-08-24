@@ -23,7 +23,10 @@
 		<a class="nav-link" href="{% url 'users:user_list' %}">{% translate "Users" %}</a>
         </li>
       {% if user.is_authenticated %}
-    <li class="nav-item">
+      	<li class="nav-item">
+        	<a class="nav-link" href="{% url 'statuses:statuses_index' %}">{% translate "Statuses" %}</a>
+    	</li>
+    	<li class="nav-item">
 	    <form method="post" action="{% url 'logout' %}" style="display: inline;">
             {% csrf_token %}
             <button type="submit" class="btn-link nav-link" style="background: none; color: inherit; border: none; padding: 0; font: inherit; cursor: pointer; margin: 0; line-height: inherit;">

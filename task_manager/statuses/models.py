@@ -20,12 +20,12 @@ class Status(models.Model):
     def __str__(self) -> str:
         return self.name
 
-    def delete(self, using=None, keep_parents=False):
-        if self.tasks.exists():
-            related_objects = self.tasks.all()
-            raise models.ProtectedError(
-                _("Can't delete status because it's in use"), related_objects
-            )
-        return super().delete(using, keep_parents)
+    #def delete(self, using=None, keep_parents=False):
+     #   if self.tasks.exists():
+      #      related_objects = self.tasks.all()
+       #     raise models.ProtectedError(
+        #        _("Can't delete status because it's in use"), related_objects
+         #   )
+        #return super().delete(using, keep_parents)
 
 # Create your models here.
