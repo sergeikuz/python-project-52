@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from . import views
-from django.contrib.auth.views import LoginView, LogoutView
+from .views import CustomLoginView, CustomLogoutView
 
 
 urlpatterns = [
@@ -26,8 +26,9 @@ urlpatterns = [
     path('users/', include(('task_manager.users.urls', 'users'), namespace='users')),
     path('statuses/', include(('task_manager.statuses.urls', 'statuses'), namespace='statuses')),
     path('tasks/', include(('task_manager.tasks.urls', 'tasks'), namespace='tasks')),
+    path('labels/', include(('task_manager.labels.urls', 'labels'), namespace='labels')),
     path('', views.IndexView.as_view(), name='index'),
     path('accounts/', include('django.contrib.auth.urls')),  # Включает все стандартные URL для аутентификации
-    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('login/', CustomLoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
 ]

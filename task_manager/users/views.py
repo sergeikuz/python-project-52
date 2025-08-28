@@ -1,19 +1,13 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.urls import reverse
-from django.views import View
-from django.views.generic import CreateView
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm, CustomUserChangeForm
+from django.shortcuts import redirect
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import UpdateView
-from django.views.generic import ListView
-from django.views.generic import CreateView, UpdateView, DeleteView
+from task_manager.mixins import CustomLoginRequiredMixin
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth import logout
 from django.contrib import messages
-
+from django.utils.translation import gettext_lazy as _
+from django.db.models import ProtectedError
+from .forms import CustomUserCreationForm
 
 class UserListView(ListView):
     model = User
@@ -24,42 +18,63 @@ class UserCreateView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'users/user_form.html'
     success_url = reverse_lazy('login')
+    message_success = _("Account created successfully! You can now log in.")
+    form_title = _("Register User")
+    form_submit = _("Register")
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, "Account created successfully! You can now log in.")
+        messages.success(self.request, self.message_success)
         return response
 
-class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
     model = User
-    fields = ['username', 'first_name', 'last_name', 'email']
+    form_class = CustomUserCreationForm
     template_name = 'users/user_form.html'
-    success_url = reverse_lazy('users:user_list')  # Направляет на страницу профиля после обновления
+    success_url = reverse_lazy('users:user_list')
+    message_warning = _("You do not have permission to edit this user.")
+    message_success = _("Profile updated successfully!")
+    form_title = _("Edit User")
+    form_submit = _("Edit")
 
-    def test_func(self): # Ограничивает доступ для редактирования только своим профилем
-        user = self.get_object()
-        return self.request.user == user
+    def dispatch(self, request, *args, **kwargs):
+        if not self.get_object() == request.user:
+            messages.error(self.request, self.message_warning)
+            return redirect('users:user_list')
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        if form.cleaned_data['password1']:
+            self.object.set_password(form.cleaned_data['password1'])
+            self.object.save()
         response = super().form_valid(form)
-        messages.success(self.request, "Profile updated successfully!")
+        messages.success(self.request, self.message_success)
         return response
 
-class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
     model = User
     template_name = 'users/user_confirm_delete.html'
-    success_url = reverse_lazy('users:user_list')  # Или на любую другую страницу после удаления
+    success_url = reverse_lazy('users:user_list')
+    message_warning = _("You do not have permission to edit this user.")
+    message_success = _("Profile deleted successfully!")
+    message_perm = _('It is not possible to delete a user because it is being used')
 
-    def test_func(self): # Ограничивает доступ для удаления только своим профилем
-        user = self.get_object()
-        if self.request.user != user:
-            messages.warning(self.request, "You do not have permission to edit this user.")
-        return self.request.user == user
+    def dispatch(self, request, *args, **kwargs):
+        if not self.get_object() == request.user:
+            messages.error(self.request, self.message_warning)
+            return redirect('users:user_list')
+        return super().dispatch(request, *args, **kwargs)
     
     def delete(self, request, *args, **kwargs):
-        messages.success(self.request, "Profile deleted successfully.")
-        response = super().delete(request, *args, **kwargs)
-        if self.request.user.is_authenticated:
-            logout(request)
-        return response
-
+        try:
+            response = super().delete(request, *args, **kwargs)
+            messages.success(self.request, self.message_success)
+            if self.request.user.is_authenticated:
+                logout(request)
+            return response
+        except ProtectedError:
+            messages.error(self.request, self.message_perm)
+            return redirect('users:user_list')
+    
+    
+    

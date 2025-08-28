@@ -4,12 +4,11 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% block content %}
 
-<h2>Confirm Delete</h2>
+<h2>{% translate 'Delete user' %}</h2>
 <form method="post">
     {% csrf_token %}
-    <p>Are you sure you want to delete {{ object.username }}?</p>
-    <button type="submit">Confirm</button>
-    <a href="{% url 'users:user_list' %}">Cancel</a>
+    <p>{% translate 'Are you sure you want to delete' %} {{ object.username }}?</p>
+    <button class="btn btn-small btn-danger" type="submit">{% translate 'Yes, delete' %}</button>
 </form>
 
 {% endblock %}

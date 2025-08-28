@@ -28,8 +28,8 @@
 	    <td>{{ task.executor.first_name }} {{ task.executor.last_name }}</td>
             <td>{{ task.created_at|date:"Y-m-d H:i" }}</td>
             <td>
-                <a href="{% url 'tasks:tasks_update' task.id %}" class="btn btn-primary">{% trans "Update" %}</a>
-                <a href="{% url 'tasks:tasks_delete' task.id %}" class="btn btn-danger">{% trans "Delete" %}</a>
+                <a class="btn btn-link d-block" href="{% url 'tasks:tasks_update' task.id %}">{% trans "Edit" %}</a>
+                <a class="btn btn-link d-block" href="{% url 'tasks:tasks_delete' task.id %}">{% trans "Delete" %}</a>
             </td>
         </tr>
         {% endfor %}
