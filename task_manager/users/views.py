@@ -32,14 +32,18 @@ class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
     form_class = CustomUserCreationForm
     template_name = 'users/user_form.html'
     success_url = reverse_lazy('users:user_list')
-    message_warning = _("You do not have permission to edit this user.")
+    message_warning_perm = _("You do not have permission to edit this user.")
     message_success = _("Profile updated successfully!")
+    message_warning_log = _("You are not registered ! Please log in")
     form_title = _("Edit User")
     form_submit = _("Edit")
 
     def dispatch(self, request, *args, **kwargs):
-        if not self.get_object() == request.user:
-            messages.error(self.request, self.message_warning)
+        if not request.user.is_authenticated:
+            messages.error(self.request, self.message_warning_log)
+            return redirect('login')
+        elif not self.get_object() == request.user:
+            messages.error(self.request, self.message_warning_perm)
             return redirect('users:user_list')
         return super().dispatch(request, *args, **kwargs)
 
@@ -55,13 +59,17 @@ class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
     model = User
     template_name = 'users/user_confirm_delete.html'
     success_url = reverse_lazy('users:user_list')
-    message_warning = _("You do not have permission to edit this user.")
+    message_warning_perm = _("You do not have permission to edit this user.")
     message_success = _("Profile deleted successfully!")
     message_perm = _('It is not possible to delete a user because it is being used')
+    message_warning_log = _("You are not registered ! Please log in")
 
     def dispatch(self, request, *args, **kwargs):
-        if not self.get_object() == request.user:
-            messages.error(self.request, self.message_warning)
+        if not request.user.is_authenticated:
+            messages.error(self.request, self.message_warning_log)
+            return redirect('login')
+        elif not self.get_object() == request.user:
+            messages.error(self.request, self.message_warning_perm)
             return redirect('users:user_list')
         return super().dispatch(request, *args, **kwargs)
     
