@@ -17,10 +17,12 @@ class StatusesIndexView(CustomLoginRequiredMixin, ListView):
 
 class StatusesCreateView(CustomLoginRequiredMixin, CreateView):
     form_class = StatusForm
-    template_name = 'statuses/statuses_form.html'
+    template_name = 'general_form.html'
     success_url = reverse_lazy("statuses:statuses_index")
     success_message = _("The status was created successfully")
-    
+    form_title = _("Create status")
+    form_submit = _("Create")
+
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, self.success_message)
@@ -29,9 +31,11 @@ class StatusesCreateView(CustomLoginRequiredMixin, CreateView):
 class StatusesUpdateView(CustomLoginRequiredMixin, UpdateView):
     form_class = StatusForm
     model = Status
-    template_name = 'statuses/statuses_form.html'
+    template_name = 'general_form.html'
     success_url = reverse_lazy("statuses:statuses_index")
     success_message = _("The status was updated successfully")
+    form_title = _("Edit stutus")
+    form_submit = _("Edit")
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -43,10 +47,11 @@ class StatusesDeleteView(
     DeleteView
 ):
     model = Status
-    template_name = 'statuses/statuses_confirm_delete.html'
+    template_name = 'general_delete_form.html'
     success_url = reverse_lazy("statuses:statuses_index")
     success_delete_message = _("The status was deleted successfully")
     error_delete_message = _("Cannot delete status because it is in use.")
+    form_title = _("Delete status")
 
     def form_valid(self, form):
         self.object = self.get_object()

@@ -3,11 +3,11 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from task_manager.mixins import CustomLoginRequiredMixin
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
-from django.contrib.auth import logout
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.db.models import ProtectedError
 from .forms import CustomUserCreationForm
+
 
 class UserListView(ListView):
     model = User
@@ -16,7 +16,7 @@ class UserListView(ListView):
 
 class UserCreateView(CreateView):
     form_class = CustomUserCreationForm
-    template_name = 'users/user_form.html'
+    template_name = 'general_form.html'
     success_url = reverse_lazy('login')
     message_success = _("Account created successfully! You can now log in.")
     form_title = _("Register User")
@@ -30,7 +30,7 @@ class UserCreateView(CreateView):
 class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
     model = User
     form_class = CustomUserCreationForm
-    template_name = 'users/user_form.html'
+    template_name = 'general_form.html'
     success_url = reverse_lazy('users:user_list')
     message_warning_perm = _("You do not have permission to edit this user.")
     message_success = _("Profile updated successfully!")
@@ -57,12 +57,14 @@ class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
 
 class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
     model = User
-    template_name = 'users/user_confirm_delete.html'
+    template_name = 'general_delete_form.html'
     success_url = reverse_lazy('users:user_list')
     message_warning_perm = _("You do not have permission to edit this user.")
     message_success = _("Profile deleted successfully!")
     message_perm = _('It is not possible to delete a user because it is being used')
     message_warning_log = _("You are not registered ! Please log in")
+    form_title = _('Delete user')
+
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -74,15 +76,15 @@ class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
     
     def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
         try:
-            response = super().delete(request, *args, **kwargs)
+            self.object.delete()
             messages.success(self.request, self.message_success)
-            if self.request.user.is_authenticated:
-                logout(request)
-            return response
-        except ProtectedError:
+        except ProtectedError as e:
             messages.error(self.request, self.message_perm)
-            return redirect('users:user_list')
+            return redirect(self.success_url)
+        return redirect(self.success_url)
+
     
     
     
