@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from django.core.exceptions import ValidationError
 
 class Status(models.Model):
     name = models.CharField(
@@ -20,12 +20,11 @@ class Status(models.Model):
     def __str__(self) -> str:
         return self.name
 
-    #def delete(self, using=None, keep_parents=False):
-     #   if self.tasks.exists():
-      #      related_objects = self.tasks.all()
-       #     raise models.ProtectedError(
-        #        _("Can't delete status because it's in use"), related_objects
-         #   )
-        #return super().delete(using, keep_parents)
+    def can_delete(self):
+        return not self.tasks.exists()
 
-# Create your models here.
+    def delete(self, *args, **kwargs):
+        if not self.can_delete():
+            raise ValidationError(_("Cannot delete status because it is in use."))
+        super().delete(*args, **kwargs)
+        return True

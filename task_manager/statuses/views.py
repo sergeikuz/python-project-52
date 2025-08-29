@@ -1,12 +1,12 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+from django.shortcuts import redirect
 from .models import Status
 from .forms import StatusForm
 from django.contrib import messages
-from task_manager.mixins import (
-    CustomLoginRequiredMixin,
-)
+from task_manager.mixins import CustomLoginRequiredMixin
+from django.core.exceptions import ValidationError
 
 
 class StatusesIndexView(CustomLoginRequiredMixin, ListView):
@@ -46,8 +46,13 @@ class StatusesDeleteView(
     template_name = 'statuses/statuses_confirm_delete.html'
     success_url = reverse_lazy("statuses:statuses_index")
     success_delete_message = _("The status was deleted successfully")
+    error_delete_message = _("Cannot delete status because it is in use.")
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-        messages.success(self.request, self.success_delete_message)
-        return response
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            messages.success(self.request, self.success_delete_message)
+        except ValidationError as e:
+            messages.error(self.request, self.error_delete_message)
+        return redirect(self.success_url)
