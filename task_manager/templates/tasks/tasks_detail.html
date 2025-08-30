@@ -6,22 +6,27 @@
 
 <div class="container">
     <h1 class="h1 text-left">{% trans "Task detail" %}</h1>
-</div>
-<div class="container">
-    <p>{% trans "Name" %}: {{ task.name }}</p>
-    <p>{% trans "Description" %}: {{ task.description }}</p>
-    <p>{% trans "Status" %}: {{ task.status.name }}</p>
-    <p>{% trans "Owner" %}: {{ task.owner.first_name }} {{ task.owner.last_name }}</p>
-    <p>{% trans "Executor" %}: {{ task.executor.first_name }} {{ task.executor.last_name }}</p>
-    <p>{% trans "Created at" %}: {{ task.created_at|date:"Y-m-d H:i" }}</p>
-    <p>{% trans "Labels" %}</p>
-    <ul>
-        {% for label in task.labels.all %}
-            <li>{{ label.name }}</li>
-        {% endfor %}
-    </ul>
-    <p><a href="{% url 'tasks:tasks_update' task.id %}">{% trans "Update" %}</a></p>
-    <p><a href="{% url 'tasks:tasks_delete' task.id %}">{% trans "Delete" %}</a></p>
+    <div class="card mt-3">
+        <div class="card-header">
+            {{ task.name }}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{% trans "Details" %}</h5>
+            <p class="card-text"><strong>{% trans "Description" %}: </strong>{{ task.description }}</p>
+            <p class="card-text"><strong>{% trans "Status" %}: </strong>{{ task.status.name }}</p>
+            <p class="card-text"><strong>{% trans "Owner" %}: </strong>{{ task.owner.first_name }} {{ task.owner.last_name }}</p>
+            <p class="card-text"><strong>{% trans "Executor" %}: </strong>{{ task.executor.first_name }} {{ task.executor.last_name }}</p>
+            <p class="card-text"><strong>{% trans "Created at" %}: </strong>{{ task.created_at|date:"Y-m-d H:i" }}</p>
+            <p class="card-text"><strong>{% trans "Labels" %}: </strong></p>
+            <ul>
+                {% for label in task.labels.all %}
+                    <li>{{ label.name }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'tasks:tasks_update' task.id %}" class="btn btn-primary">{% trans "Update" %}</a>
+            <a href="{% url 'tasks:tasks_delete' task.id %}" class="btn btn-danger">{% trans "Delete" %}</a>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

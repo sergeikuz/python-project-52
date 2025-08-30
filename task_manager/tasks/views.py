@@ -6,19 +6,28 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
     DetailView,
-    ListView,
 )
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from .models import Task
-from .forms import TaskForm
+from .forms import TaskForm, TaskFilter
 from task_manager.mixins import CustomLoginRequiredMixin
+from django_filters.views import FilterView
 
 
-class TaskListView(CustomLoginRequiredMixin, ListView,):
+class TaskListView(CustomLoginRequiredMixin, FilterView):
     model = Task
     template_name = "tasks/tasks_index.html"
     context_object_name = "tasks"
+    filterset_class = TaskFilter
+
+    def get_filterset(self, filterset_class):
+        # Передача текущего пользователя в фильтр
+        return filterset_class(
+            self.request.GET or None, 
+            queryset=self.get_queryset(), 
+            request=self.request
+        )
 
 
 class TaskCreateView(CustomLoginRequiredMixin, CreateView):

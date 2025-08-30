@@ -4,12 +4,12 @@
 {% get_current_language as LANGUAGE_CODE %}
 
 {% block content %}
-
+<div class="container-fluid"></div>
 <h2>{% translate view.form_title %}</h2>
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% bootstrap_form form layout='horizontal' %}
     <button class="btn btn-small btn-primary" type="submit">{% translate view.form_submit %}</button>
 </form>
-
+</div>
 {% endblock %}

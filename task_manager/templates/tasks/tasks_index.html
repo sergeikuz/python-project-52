@@ -6,6 +6,14 @@
 
 <h1 class="h1 text-left">{% trans "Tasks" %}</h1>
 <a class="btn btn-small btn-primary" href="{% url 'tasks:tasks_create' %}">{% trans "Create task" %}</a>
+
+<form action="{% url 'tasks:tasks_index' %}" method="get">
+        {% bootstrap_form filter.form %}
+        <div class="d-flex gap-2 mb-3">
+            <input type="submit" class ="btn btn-primary" value='{% trans "Show" %}'>            
+        </div>
+    </form>
+
 <table class="table table-sm table-striped" style="border-collapse: collapse; width: 100%;">
     <thead>
         <tr>

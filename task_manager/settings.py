@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'task_manager.tasks',
     'task_manager.labels',
     'django.contrib.admin',
+    'django_filters',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -65,6 +66,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_bootstrap5',
     'django_extensions',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

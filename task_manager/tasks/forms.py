@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
+import django_filters
 
 User = get_user_model()
 
@@ -39,6 +40,23 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ["name", "description", "status", "executor", "labels"]
+    
+class TaskFilter(django_filters.FilterSet):
+    my_tasks = django_filters.BooleanFilter(
+        field_name='owner',
+        label=_("Show only my tasks"),
+        method='filter_my_tasks',
+        widget=forms.CheckboxInput(),
+    )
 
+    def filter_my_tasks(self, queryset, name, value):
+        if value:  # Если True, фильтруем задачи, где владелец - текущий пользователь.
+            return queryset.filter(owner=self.request.user)
+        # Если False, возвращаем все задачи без фильтрации по владельцу.
+        return queryset
+
+    class Meta:
+        model = Task
+        fields = ['status', 'executor', 'labels', 'my_tasks']
 
 
