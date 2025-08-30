@@ -3,6 +3,7 @@ from .models import Task
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from task_manager.statuses.models import Status
+from task_manager.labels.models import Label
 
 User = get_user_model()
 
@@ -28,10 +29,16 @@ class TaskForm(forms.ModelForm):
         empty_label=None,
         widget=forms.Select()
     )
+    labels = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.all(),
+        label=_("Labels"),
+        required=False,
+        widget=forms.SelectMultiple()
+    )
 
     class Meta:
         model = Task
-        fields = ["name", "description", "status", "executor"]
+        fields = ["name", "description", "status", "executor", "labels"]
 
 
 

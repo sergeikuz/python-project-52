@@ -5,8 +5,8 @@
 {% block content %}
 
 <h1 class="h1 text-left">{% trans "Tasks" %}</h1>
-<a class="btn btn-lg btn-primary" href="{% url 'tasks:tasks_create' %}">{% trans "Create task" %}</a>
-<table class="table table-striped">
+<a class="btn btn-small btn-primary" href="{% url 'tasks:tasks_create' %}">{% trans "Create task" %}</a>
+<table class="table table-sm table-striped" style="border-collapse: collapse; width: 100%;">
     <thead>
         <tr>
             <th>{% trans "ID" %}</th>
@@ -20,12 +20,12 @@
     </thead>
     <tbody>
         {% for task in tasks %}
-        <tr>
+        <tr style="background-color: {% cycle '#f9f9f9' 'white' %};">
             <td>{{ task.id }}</td>
             <td><a href="{% url 'tasks:tasks_detail' task.id %}">{{ task.name }}</a></td>
             <td>{{ task.status.name }}</td>
             <td>{{ task.owner.first_name }} {{ task.owner.last_name }}</td>
-	    <td>{{ task.executor.first_name }} {{ task.executor.last_name }}</td>
+            <td>{{ task.executor.first_name }} {{ task.executor.last_name }}</td>
             <td>{{ task.created_at|date:"Y-m-d H:i" }}</td>
             <td>
                 <a class="btn btn-link d-block" href="{% url 'tasks:tasks_update' task.id %}">{% trans "Edit" %}</a>

@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 
 
@@ -18,9 +18,10 @@ class Label(models.Model):
         return self.name
 
     def delete(self, *args, **kwargs):
-        related_tasks = self.tasks_labels.all()
-        if related_tasks.exists():
-            raise models.ProtectedError(
-                _("Label is in use and cannot be deleted."), related_tasks
-            )
-        super().delete(*args, **kwargs)
+        with transaction.atomic():
+            if self.tasks_labels.exists():
+                raise models.ProtectedError(
+                    _("Label is in use and cannot be deleted."), 
+                    self.tasks_labels.all()
+                )
+            super().delete(*args, **kwargs)

@@ -14,6 +14,12 @@
     <p>{% trans "Owner" %}: {{ task.owner.first_name }} {{ task.owner.last_name }}</p>
     <p>{% trans "Executor" %}: {{ task.executor.first_name }} {{ task.executor.last_name }}</p>
     <p>{% trans "Created at" %}: {{ task.created_at|date:"Y-m-d H:i" }}</p>
+    <p>{% trans "Labels" %}</p>
+    <ul>
+        {% for label in task.labels.all %}
+            <li>{{ label.name }}</li>
+        {% endfor %}
+    </ul>
     <p><a href="{% url 'tasks:tasks_update' task.id %}">{% trans "Update" %}</a></p>
     <p><a href="{% url 'tasks:tasks_delete' task.id %}">{% trans "Delete" %}</a></p>
 </div>

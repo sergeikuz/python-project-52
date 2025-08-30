@@ -3,9 +3,9 @@
 
 {% block content %}
 
-<h1>{% trans "Labels" %}</h1>
-<a href="{% url 'labels:labels_create' %}" class="btn btn-primary">{% trans "Create Label" %}</a>
-<table class="table">
+<h1 class="h1 text-left">{% trans "Labels" %}</h1>
+<a href="{% url 'labels:labels_create' %}" class="btn btn-small btn-primary">{% trans "Create Label" %}</a>
+<table class="table table-sm table-striped" style="border-collapse: collapse; width: 100%;">
     <thead>
         <tr>
             <th>{% trans "ID" %}</th>
@@ -16,13 +16,13 @@
     </thead>
     <tbody>
         {% for label in labels %}
-        <tr>
+        <tr style="background-color: {% cycle '#f9f9f9' 'white' %};">
             <td>{{ label.id }}</td>
             <td>{{ label.name }}</td>
             <td>{{ label.created_at|date:"Y-m-d H:i" }}</td>
             <td>
-                <a href="{% url 'labels:labels_update' label.id %}" class="btn btn-primary">{% trans "Update" %}</a>
-                <a href="{% url 'labels:labels_delete' label.id %}" class="btn btn-danger">{% trans "Delete" %}</a>
+                <a href="{% url 'labels:labels_update' label.id %}" class="btn btn-link d-block">{% trans "Update" %}</a>
+                <a href="{% url 'labels:labels_delete' label.id %}" class="btn btn-link d-block">{% trans "Delete" %}</a>
             </td>
         </tr>
         {% endfor %}

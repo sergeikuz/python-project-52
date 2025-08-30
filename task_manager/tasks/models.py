@@ -1,8 +1,10 @@
 from django.db import models
 from task_manager.statuses.models import Status
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from task_manager.labels.models import Label
+
+User = get_user_model()
 
 
 class Task(models.Model):

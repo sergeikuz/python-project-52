@@ -80,11 +80,7 @@ class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
         try:
             self.object.delete()
             messages.success(self.request, self.message_success)
-        except ProtectedError as e:
+        except ProtectedError:
             messages.error(self.request, self.message_perm)
             return redirect(self.success_url)
         return redirect(self.success_url)
-
-    
-    
-    

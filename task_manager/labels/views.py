@@ -16,9 +16,11 @@ class LabelListView(CustomLoginRequiredMixin, ListView):
 class LabelCreateView(CustomLoginRequiredMixin, CreateView):
     model = Label
     form_class = LabelForm
-    template_name = "labels/labels_form.html"
+    template_name = 'general_form.html'
     success_url = reverse_lazy("labels:labels_index")
     success_message = _("Label created successfully")
+    form_title = _("Create label")
+    form_submit = _("Create")
 
     def form_valid(self, form):
         messages.success(self.request, self.success_message)
@@ -29,8 +31,10 @@ class LabelUpdateView(CustomLoginRequiredMixin, UpdateView):
     model = Label
     form_class = LabelForm
     success_url = reverse_lazy("labels:labels_index")
-    template_name = "labels/labels_form.html"
+    template_name = 'general_form.html'
     success_message = _("Label updated successfully")
+    form_title = _("Edit label")
+    form_submit = _("Edit")
 
     def form_valid(self, form):
         messages.success(self.request, self.success_message)
@@ -42,9 +46,10 @@ class LabelDeleteView(
     DeleteView
 ):
     model = Label
-    template_name = "labels/labels_confirm_delete.html"
+    template_name = 'general_delete_form.html'
     success_url = reverse_lazy("labels:labels_index")
     success_delete_message = _("Label deleted successfully")
+    form_title = _("Delete label")
 
     def form_valid(self, form):
         messages.success(self.request, self.success_delete_message)

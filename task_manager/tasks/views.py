@@ -24,11 +24,11 @@ class TaskListView(CustomLoginRequiredMixin, ListView,):
 class TaskCreateView(CustomLoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
-    template_name = 'tasks/tasks_form.html'
+    template_name = 'general_form.html'
     success_url = reverse_lazy("tasks:tasks_index")
-
     success_message = _("Task created successfully")
-    error_message = _("Please correct the errors below.")
+    form_title = _("Create task")
+    form_submit = _("Create")
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -39,10 +39,11 @@ class TaskCreateView(CustomLoginRequiredMixin, CreateView):
 class TaskUpdateView(CustomLoginRequiredMixin, UpdateView):
     model = Task
     form_class = TaskForm
-    template_name = 'tasks/tasks_form.html'
+    template_name = 'general_form.html'
     success_url = reverse_lazy("tasks:tasks_index")
     success_message = _("Task updated successfully")
-    error_message = _("Please correct the errors below.")
+    form_title = _("Edit task")
+    form_submit = _("Edit")
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -56,9 +57,11 @@ class TaskDeleteView(
     DeleteView
 ):
     model = Task
-    template_name = 'tasks/tasks_confirm_delete.html'
+    template_name = 'general_delete_form.html'
     success_url = reverse_lazy("tasks:tasks_index")
     success_delete_message = _("Task successfully deleted")
+    permission_denied_message = _("A task can only be deleted by its author")
+    form_title = _("Delete task")
 
     def test_func(self):
         return self.request.user == self.get_object().owner
@@ -67,7 +70,7 @@ class TaskDeleteView(
         if not self.test_func():
             messages.error(
                 self.request,
-                _("A task can only be deleted by its author."))
+                self.permission_denied_message)
             return redirect(self.success_url)
         messages.error(self.request, self.permission_denied_message)
         return super().handle_no_permission()
