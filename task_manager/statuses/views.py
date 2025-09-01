@@ -7,6 +7,7 @@ from .forms import StatusForm
 from django.contrib import messages
 from task_manager.mixins import CustomLoginRequiredMixin
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse
 
 
 class StatusesIndexView(CustomLoginRequiredMixin, ListView):

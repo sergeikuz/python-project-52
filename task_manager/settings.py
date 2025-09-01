@@ -16,6 +16,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 from django.contrib.messages import constants as messages
+import rollbar
 
 load_dotenv()
 
@@ -40,14 +41,25 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = [
-        'webserver',
-        '127.0.0.1',
-]
+raw_hosts = os.getenv('ALLOWED_HOSTS', '')
+hosts = [h.strip() for h in raw_hosts.split(',') if h.strip()]
+if 'webserver' not in hosts:
+    hosts.append('webserver')
+
+ALLOWED_HOSTS = hosts
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+ROLLBAR = {
+    'access_token': os.getenv('ROLLBAR_ACCESS_TOKEN'),
+    'environment': 'development' if DEBUG else 'production',
+    'code_version': '1.0',
+    'root': BASE_DIR,
+}
+
+rollbar.init(**ROLLBAR)
 
 # Application definition
 
@@ -80,6 +92,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
+
 
 ROOT_URLCONF = 'task_manager.urls'
 
@@ -157,12 +170,6 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-ROLLBAR = {
-    'access_token': os.getenv("ROLLBAR_ACCESS_TOKEN"),
-    'environment': 'development' if DEBUG else 'production',
-    'code_version': '1.0',
-    'root': BASE_DIR,
-}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
