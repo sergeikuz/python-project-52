@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from .models import Task
 from task_manager.statuses.models import Status
+from task_manager.labels.models import Label
 
 User = get_user_model()
 
@@ -24,8 +25,10 @@ class TaskModelTests(TestCase):
         )
 
         self.status = Status.objects.create(name="To Do")
-
         self.status2 = Status.objects.create(name="In Progress")
+
+        self.label = Label.objects.create(name="Test Label")
+        self.label2 = Label.objects.create(name="Second Label")
 
         self.task = Task.objects.create(
             name="Test Task",
@@ -34,6 +37,8 @@ class TaskModelTests(TestCase):
             owner=self.user,
             executor=self.user,
         )
+
+        self.task.labels.add(self.label, self.label2)
 
         self.tasks_url = reverse("tasks:tasks_index")
         self.task_detail_url = reverse(
@@ -77,6 +82,8 @@ class TaskModelTests(TestCase):
         self.assertContains(response, "Test Task")
         self.assertContains(response, "Test Description")
         self.assertContains(response, "To Do")
+        self.assertContains(response, "Test Label")
+        self.assertContains(response, "Second Label")
 
         task = response.context["task"]
         self.assertEqual(task.id, self.task.id)
@@ -84,6 +91,7 @@ class TaskModelTests(TestCase):
         self.assertEqual(task.status, self.status)
         self.assertEqual(task.owner, self.user)
         self.assertEqual(task.executor, self.user)
+        self.assertEqual(list(task.labels.all()), [self.label, self.label2])
 
     def test_task_create_view(self):
         response = self.client.get(self.task_create_url)
@@ -93,8 +101,8 @@ class TaskModelTests(TestCase):
         self.client.login(username="testuser", password="testpassword")
         response = self.client.get(self.task_create_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "tasks/tasks_form.html")
-        self.assertContains(response, "Submit")
+        self.assertTemplateUsed(response, "general_form.html")
+        self.assertContains(response, "Create")
 
         task_data = {
             "name": "New Task",
@@ -133,13 +141,14 @@ class TaskModelTests(TestCase):
         self.client.login(username="testuser", password="testpassword")
         response = self.client.get(self.task_update_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "tasks/tasks_form.html")
+        self.assertTemplateUsed(response, "general_form.html")
 
         task_data = {
             "name": "Updated Task",
             "description": "Updated Description",
             "status": self.status2.id,
             "executor": self.another_user.id,
+            "labels": [self.label.id],
         }
 
         response = self.client.post(self.task_update_url, task_data)
@@ -173,8 +182,8 @@ class TaskModelTests(TestCase):
         self.client.login(username="testuser", password="testpassword")
         response = self.client.get(self.task_delete_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "tasks/tasks_confirm_delete.html")
-        self.assertContains(response, "Confirm")
+        self.assertTemplateUsed(response, "general_delete_form.html")
+        self.assertContains(response, "Yes, delete")
 
         response = self.client.post(self.task_delete_url)
         self.assertEqual(response.status_code, 302)
@@ -191,3 +200,12 @@ class TaskModelTests(TestCase):
 
         self.assertEqual(Task.objects.count(), 1)
         self.assertTrue(Task.objects.filter(id=self.task.id).exists())
+
+    def test_task_filter(self):
+        self.client.login(username="testuser", password="testpassword")
+
+        response = self.client.get(self.tasks_url, {"status": self.status2.id})
+        self.assertEqual(response.status_code, 200)
+
+        tasks = response.context["tasks"]
+        self.assertNotIn(self.task, tasks)

@@ -66,7 +66,7 @@ class StatusTest(TestCase):
         self.client.login(username="TestUser", password="password123")
         response = self.client.get(self.create_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "statuses/statuses_form.html")
+        self.assertTemplateUsed(response, "general_form.html")
 
         # Отправка POST-запроса на создание нового статуса.
         # Проверка,
@@ -91,7 +91,7 @@ class StatusTest(TestCase):
 
         response = self.client.get(self.update_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "statuses/statuses_form.html")
+        self.assertTemplateUsed(response, "general_form.html")
 
         # Тестирование обновления существующего статуса.
         # Проверка,
@@ -137,7 +137,7 @@ class StatusTest(TestCase):
         response = self.client.get(self.delete_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
-            response, "statuses/statuses_confirm_delete.html"
+            response, "general_delete_form.html"
         )
 
         self.assertTrue(Status.objects.filter(id=self.status.id).exists())

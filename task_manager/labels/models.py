@@ -1,5 +1,6 @@
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 
 class Label(models.Model):
@@ -13,15 +14,16 @@ class Label(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True,
         verbose_name=_("Updated at"))
+    messege_valid = _("Label is in use and cannot be deleted.")
 
     def __str__(self):
         return self.name
+    
+    def can_delete(self):
+        return not  self.tasks_labels.exists()
 
     def delete(self, *args, **kwargs):
-        with transaction.atomic():
-            if self.tasks_labels.exists():
-                raise models.ProtectedError(
-                    _("Label is in use and cannot be deleted."),
-                    self.tasks_labels.all()
-                )
-            super().delete(*args, **kwargs)
+        if not self.can_delete():
+            raise ValidationError(self.messege_valid)
+        super().delete(*args, **kwargs)
+        return True

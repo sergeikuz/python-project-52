@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from .forms import LabelForm
 from task_manager.mixins import CustomLoginRequiredMixin
+from django.core.exceptions import ValidationError
+from django.shortcuts import redirect
 
 
 class LabelListView(CustomLoginRequiredMixin, ListView):
@@ -49,8 +51,14 @@ class LabelDeleteView(
     template_name = 'general_delete_form.html'
     success_url = reverse_lazy("labels:labels_index")
     success_delete_message = _("Label deleted successfully")
+    message_warning_perm = _("Label is in use and cannot be deleted.")
     form_title = _("Delete label")
-
+ 
     def form_valid(self, form):
-        messages.success(self.request, self.success_delete_message)
-        return super().form_valid(form)
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            messages.success(self.request, self.success_delete_message)
+        except ValidationError:
+            messages.error(self.request, self.message_warning_perm)
+        return redirect(self.success_url)

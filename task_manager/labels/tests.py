@@ -55,7 +55,7 @@ class LabelTest(TestCase):
 
         response = self.client.get(self.create_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "labels/labels_form.html")
+        self.assertTemplateUsed(response, "general_form.html")
 
         response = self.client.post(self.create_url, {"name": "New Label"})
         self.assertEqual(response.status_code, 302)
@@ -76,7 +76,7 @@ class LabelTest(TestCase):
 
         response = self.client.get(self.update_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "labels/labels_form.html")
+        self.assertTemplateUsed(response, "general_form.html")
 
         response = self.client.post(self.update_url, {"name": "Updated Label"})
         self.assertEqual(response.status_code, 302)
@@ -107,7 +107,7 @@ class LabelTest(TestCase):
 
         response = self.client.get(self.delete_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "labels/labels_confirm_delete.html")
+        self.assertTemplateUsed(response, "general_delete_form.html")
 
         self.assertTrue(Label.objects.filter(id=self.label.id).exists())
 
