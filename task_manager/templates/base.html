@@ -34,14 +34,12 @@
             <a class="nav-link" href="{% url 'tasks:tasks_index' %}">{% translate "Tasks" %}</a>
         </li>
         <li class="nav-item">
-	    <form method="post" action="{% url 'logout' %}" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn-link nav-link" style="background: none; color: inherit; border: none; padding: 0; font: inherit; cursor: pointer; margin: 0; line-height: inherit;">
-                {% trans "Logout" %}
-            </button>
-        </form>
-    </li>
-{% else %}
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <input class="nav-link" type="submit" value="{% translate 'Logout' %}">
+                        </form>
+                    </li>
+      {% else %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'login' %}">{% translate "Login" %}</a>
     </li>
