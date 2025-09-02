@@ -11,12 +11,14 @@ class CustomLoginView(LoginView):
         messages.success(self.request, self.success_message)
         return super().form_valid(form)
 
+
 class CustomLogoutView(LogoutView):
     success_message = _("You are logged out")
 
     def dispatch(self, request, *args, **kwargs):
         messages.info(request, self.success_message)
         return super().dispatch(request, *args, **kwargs)
+
 
 class IndexView(TemplateView):
     template_name = "index.html"

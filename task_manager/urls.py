@@ -22,13 +22,29 @@ from .views import CustomLoginView, CustomLogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Обязательно используйте include, чтобы указать namespace
-    path('users/', include(('task_manager.users.urls', 'users'), namespace='users')),
-    path('statuses/', include(('task_manager.statuses.urls', 'statuses'), namespace='statuses')),
-    path('tasks/', include(('task_manager.tasks.urls', 'tasks'), namespace='tasks')),
-    path('labels/', include(('task_manager.labels.urls', 'labels'), namespace='labels')),
+    path(
+        'users/',
+        include(('task_manager.users.urls', 'users'), namespace='users')
+    ),
+    path(
+        'statuses/',
+        include(
+            ('task_manager.statuses.urls', 'statuses'), namespace='statuses')
+    ),
+    path(
+        'tasks/',
+        include(('task_manager.tasks.urls', 'tasks'), namespace='tasks')
+    ),
+    path(
+        'labels/',
+        include(('task_manager.labels.urls', 'labels'), namespace='labels')
+    ),
     path('', views.IndexView.as_view(), name='index'),
-    path('accounts/', include('django.contrib.auth.urls')),  # Включает все стандартные URL для аутентификации
-    path('login/', CustomLoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path(
+        'login/',
+        CustomLoginView.as_view(template_name='registration/login.html'),
+        name='login'
+    ),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
 ]

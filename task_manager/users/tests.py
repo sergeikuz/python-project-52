@@ -7,7 +7,7 @@ User = get_user_model()
 
 class UserCRUDTestCase(TestCase):
     def setUp(self):
-        # Сначала мы создаем пользователя. 
+        # Сначала мы создаем пользователя.
         # Для наполнения базы данными используется метод setUp().
         self.user = User.objects.create_user(
             first_name="test",
@@ -24,14 +24,18 @@ class UserCRUDTestCase(TestCase):
         # Подготавливаем запросы.
         self.users_url = reverse("users:user_list")
         self.login_url = reverse("login")
-        # В самом запросе формируем правильный адрес, 
+        # В самом запросе формируем правильный адрес,
         # подставляя идентификатор созданного пользователя:
-        self.update_url = reverse("users:user_update", kwargs={"pk": self.user.id})
-        self.delete_url = reverse("users:user_delete", kwargs={"pk": self.user.id})
+        self.update_url = reverse(
+            "users:user_update", kwargs={"pk": self.user.id}
+        )
+        self.delete_url = reverse(
+            "users:user_delete", kwargs={"pk": self.user.id}
+        )
         self.create_url = reverse("users:user_create")
 
     def test_user_list(self):
-        # Выполняем запрос и проверяем, 
+        # Выполняем запрос и проверяем,
         # что он действительно добавил пользователей в базу данных:
         # формирует объект запроса к указанной странице
         response = self.client.get(self.users_url)
@@ -43,10 +47,9 @@ class UserCRUDTestCase(TestCase):
         self.assertContains(response, "SecondUser")
         self.assertTemplateUsed(response, 'users/user_list.html')
 
-
     def test_user_create(self):
         # Проверяет создание пользователя
-        # Выполняем запрос и проверяем, 
+        # Выполняем запрос и проверяем,
         # что он действительно добавил пользователей в базу данных:
         # формирует объект запроса к указанной странице
         # Отправка POST-запроса на изменение
@@ -109,7 +112,7 @@ class UserCRUDTestCase(TestCase):
         response = self.client.get(self.update_url)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, f"{self.login_url}")
-    
+
     def test_user_update_different_user(self):
         self.client.login(username="SecondUser", password="password456")
         response = self.client.get(self.update_url)
@@ -204,4 +207,6 @@ class UserCRUDTestCase(TestCase):
             }
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Password must contain at least 3 characters")
+        self.assertContains(
+            response, "Password must contain at least 3 characters"
+        )

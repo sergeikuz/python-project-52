@@ -21,7 +21,7 @@ class Label(models.Model):
         with transaction.atomic():
             if self.tasks_labels.exists():
                 raise models.ProtectedError(
-                    _("Label is in use and cannot be deleted."), 
+                    _("Label is in use and cannot be deleted."),
                     self.tasks_labels.all()
                 )
             super().delete(*args, **kwargs)

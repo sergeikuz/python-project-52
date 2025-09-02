@@ -13,4 +13,3 @@ class CustomLoginRequiredMixin(LoginRequiredMixin):
         if not self.request.user.is_authenticated:
             messages.error(self.request, self.permission_denied_message)
         return super().handle_no_permission()
-

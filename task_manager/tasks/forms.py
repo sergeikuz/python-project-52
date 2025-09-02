@@ -40,7 +40,8 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ["name", "description", "status", "executor", "labels"]
-    
+
+
 class TaskFilter(django_filters.FilterSet):
     my_tasks = django_filters.BooleanFilter(
         field_name='owner',
@@ -50,7 +51,7 @@ class TaskFilter(django_filters.FilterSet):
     )
 
     def filter_my_tasks(self, queryset, name, value):
-        if value:  # Если True, фильтруем задачи, где владелец - текущий пользователь.
+        if value:  # Если True,фильтруем задачи,где владелец-текущий пол.
             return queryset.filter(owner=self.request.user)
         # Если False, возвращаем все задачи без фильтрации по владельцу.
         return queryset
@@ -58,5 +59,3 @@ class TaskFilter(django_filters.FilterSet):
     class Meta:
         model = Task
         fields = ['status', 'executor', 'labels', 'my_tasks']
-
-

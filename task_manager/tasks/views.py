@@ -24,8 +24,8 @@ class TaskListView(CustomLoginRequiredMixin, FilterView):
     def get_filterset(self, filterset_class):
         # Передача текущего пользователя в фильтр
         return filterset_class(
-            self.request.GET or None, 
-            queryset=self.get_queryset(), 
+            self.request.GET or None,
+            queryset=self.get_queryset(),
             request=self.request
         )
 

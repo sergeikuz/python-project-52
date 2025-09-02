@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from .models import Status
 from django.contrib.auth import get_user_model
 
-User = get_user_model() 
+User = get_user_model()
 # Получает модель пользователя для более гибкого написания тестов.
 
 
@@ -34,16 +34,16 @@ class StatusTest(TestCase):
 
     def test_status_list(self):
         # Отправка GET-запроса на statuses_url.
-        #Тестируем, 
-        #что без авторизации происходит редирект
+        # Тестируем,
+        # что без авторизации происходит редирект
         # на страницу логина (статус 302).
         response = self.client.get(self.statuses_url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, self.login_url)
 
         # Авторизация с помощью логина.
-        #Проверка, 
-        # что авторизованный пользователь 
+        # Проверка,
+        # что авторизованный пользователь
         # получит правильный статус-код (200)
         self.client.login(username="TestUser", password="password123")
         response = self.client.get(self.statuses_url)
@@ -69,8 +69,8 @@ class StatusTest(TestCase):
         self.assertTemplateUsed(response, "statuses/statuses_form.html")
 
         # Отправка POST-запроса на создание нового статуса.
-        # Проверка, 
-        # что после успешного создания 
+        # Проверка,
+        # что после успешного создания
         # происходит редирект (статус 302) на список статусов.
         response = self.client.post(self.create_url, {"name": "New Status"})
         self.assertEqual(response.status_code, 302)
@@ -94,8 +94,8 @@ class StatusTest(TestCase):
         self.assertTemplateUsed(response, "statuses/statuses_form.html")
 
         # Тестирование обновления существующего статуса.
-        # Проверка, 
-        # что поле name обновляется правильно 
+        # Проверка,
+        # что поле name обновляется правильно
         # и происходит редирект на список статусов.
         response = self.client.post(
             self.update_url,
@@ -106,10 +106,10 @@ class StatusTest(TestCase):
         self.status.refresh_from_db()
         self.assertEqual(self.status.name, "Updated Status")
 
-        # self.status.refresh_from_db() 
-        # обновляет объект status из базы данных, 
+        # self.status.refresh_from_db()
+        # обновляет объект status из базы данных,
         # чтобы получить актуальное состояние объекта после изменения.
-        # проверяет, 
+        # проверяет,
         # что имя статуса действительно изменилось на "Updated Status"
         response = self.client.post(self.update_url, {"name": ""})
         self.assertEqual(response.status_code, 200)
@@ -127,7 +127,7 @@ class StatusTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, self.login_url)
 
-        self.assertEqual(self.status.name, "Test Status") 
+        self.assertEqual(self.status.name, "Test Status")
         self.status.refresh_from_db()
         self.assertEqual(self.status.name, "Test Status")
 
@@ -136,7 +136,9 @@ class StatusTest(TestCase):
 
         response = self.client.get(self.delete_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "statuses/statuses_confirm_delete.html")
+        self.assertTemplateUsed(
+            response, "statuses/statuses_confirm_delete.html"
+        )
 
         self.assertTrue(Status.objects.filter(id=self.status.id).exists())
 

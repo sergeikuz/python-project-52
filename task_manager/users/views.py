@@ -14,6 +14,7 @@ class UserListView(ListView):
     template_name = 'users/user_list.html'
     context_object_name = 'users'
 
+
 class UserCreateView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'general_form.html'
@@ -26,6 +27,7 @@ class UserCreateView(CreateView):
         response = super().form_valid(form)
         messages.success(self.request, self.message_success)
         return response
+
 
 class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
     model = User
@@ -55,16 +57,18 @@ class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
         messages.success(self.request, self.message_success)
         return response
 
+
 class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
     model = User
     template_name = 'general_delete_form.html'
     success_url = reverse_lazy('users:user_list')
     message_warning_perm = _("You do not have permission to edit this user.")
     message_success = _("Profile deleted successfully!")
-    message_perm = _('It is not possible to delete a user because it is being used')
+    message_perm = _(
+        'It is not possible to delete a user because it is being used'
+    )
     message_warning_log = _("You are not registered ! Please log in")
     form_title = _('Delete user')
-
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -74,13 +78,12 @@ class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
             messages.error(self.request, self.message_warning_perm)
             return redirect('users:user_list')
         return super().dispatch(request, *args, **kwargs)
-    
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
+
+    def post(self, request, *args, **kwargs):
         try:
-            self.object.delete()
-            messages.success(self.request, self.message_success)
+            response = super().post(request, *args, **kwargs)
+            messages.success(request, self.message_success)
+            return response
         except ProtectedError:
-            messages.error(self.request, self.message_perm)
+            messages.error(request, self.message_perm)
             return redirect(self.success_url)
-        return redirect(self.success_url)

@@ -1,8 +1,7 @@
 from django.urls import path
 from .views import UserListView, UserCreateView, UserUpdateView, UserDeleteView
 
-app_name = 'users'  # Это указывает, что пространство имен для этого набора путей будет 'users'
-
+app_name = 'users'
 urlpatterns = [
     path('', UserListView.as_view(), name='user_list'),
     path('create/', UserCreateView.as_view(), name='user_create'),

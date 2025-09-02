@@ -7,7 +7,6 @@ from .forms import StatusForm
 from django.contrib import messages
 from task_manager.mixins import CustomLoginRequiredMixin
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse
 
 
 class StatusesIndexView(CustomLoginRequiredMixin, ListView):
@@ -29,6 +28,7 @@ class StatusesCreateView(CustomLoginRequiredMixin, CreateView):
         messages.success(self.request, self.success_message)
         return response
 
+
 class StatusesUpdateView(CustomLoginRequiredMixin, UpdateView):
     form_class = StatusForm
     model = Status
@@ -42,6 +42,7 @@ class StatusesUpdateView(CustomLoginRequiredMixin, UpdateView):
         response = super().form_valid(form)
         messages.success(self.request, self.success_message)
         return response
+
 
 class StatusesDeleteView(
     CustomLoginRequiredMixin,
@@ -59,6 +60,6 @@ class StatusesDeleteView(
         try:
             self.object.delete()
             messages.success(self.request, self.success_delete_message)
-        except ValidationError as e:
+        except ValidationError:
             messages.error(self.request, self.error_delete_message)
         return redirect(self.success_url)
