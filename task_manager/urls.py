@@ -22,10 +22,18 @@ from .views import CustomLoginView, CustomLogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.IndexView.as_view(), name='index'),
     path(
         'users/',
         include(('task_manager.users.urls', 'users'), namespace='users')
     ),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path(
+        'login/',
+        CustomLoginView.as_view(template_name='registration/login.html'),
+        name='login'
+    ),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
     path(
         'statuses/',
         include(
@@ -39,12 +47,4 @@ urlpatterns = [
         'labels/',
         include(('task_manager.labels.urls', 'labels'), namespace='labels')
     ),
-    path('', views.IndexView.as_view(), name='index'),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path(
-        'login/',
-        CustomLoginView.as_view(template_name='registration/login.html'),
-        name='login'
-    ),
-    path('logout/', CustomLogoutView.as_view(), name='logout'),
 ]
