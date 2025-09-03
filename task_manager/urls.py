@@ -27,7 +27,6 @@ urlpatterns = [
         'users/',
         include(('task_manager.users.urls', 'users'), namespace='users')
     ),
-    path('accounts/', include('django.contrib.auth.urls')),
     path(
         'login/',
         CustomLoginView.as_view(template_name='registration/login.html'),
