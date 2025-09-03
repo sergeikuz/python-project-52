@@ -21,7 +21,7 @@
             <td>{{ user.id }}</td>
             <td>{{ user.username }}</td>
 	    <td>{{ user.first_name }} {{ user.last_name }}</td>
-            <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
+            <td>{{ user.created_at|date:"Y-m-d H:i" }}</td>
             <td>
                 <a class="btn btn-link d-block" href="{% url 'users:user_update' user.id %}">{% trans "Edit" %}</a>
                 <a class="btn btn-link d-block" href="{% url 'users:user_delete' user.id %}">{% trans "Delete" %}</a>

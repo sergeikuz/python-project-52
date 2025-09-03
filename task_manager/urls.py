@@ -27,11 +27,7 @@ urlpatterns = [
         'users/',
         include(('task_manager.users.urls', 'users'), namespace='users')
     ),
-    path(
-        'login/',
-        CustomLoginView.as_view(template_name='registration/login.html'),
-        name='login'
-    ),
+    path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path(
         'statuses/',

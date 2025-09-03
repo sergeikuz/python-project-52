@@ -2,10 +2,23 @@ from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
+from .forms import UserLoginForm
+from django.urls import reverse_lazy
 
 
 class CustomLoginView(LoginView):
+    authentication_form = UserLoginForm
     success_message = _("You are logged in")
+    success_url = reverse_lazy("index")
+    redirect_authenticated_user = True
+    template_name = "general_form.html"
+    error_message = _(
+        "Please enter the correct username and password. "
+        "Both fields can be case-sensitive."
+    )
+    form_title = _("Login")
+    form_submit = _("Log in")
+
 
     def form_valid(self, form):
         messages.success(self.request, self.success_message)
