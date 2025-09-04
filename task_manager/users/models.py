@@ -1,9 +1,27 @@
+from django.contrib.auth.models import (
+    AbstractBaseUser, BaseUserManager, PermissionsMixin
+)
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import AbstractUser, Group, Permission
 
 
-class User(AbstractUser):
+class CustomUserManager(BaseUserManager):
+    def create_user(self, username, password=None, **extra_fields):
+        if not username:
+            raise ValueError('The Username must be set')
+        user = self.model(username=username, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(username, password, **extra_fields)
+
+
+class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255, verbose_name=_("First Name"))
     last_name = models.CharField(max_length=255, verbose_name=_("Last name"))
     username = models.CharField(
@@ -13,24 +31,13 @@ class User(AbstractUser):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # password field supplied by AbstractBaseUser
+    # last_login field supplied by AbstractBaseUser
+    # is_superuser field provided by PermissionsMixin
+    # groups field provided by PermissionsMixin
+    # user_permissions field provided by PermissionsMixin
 
-    groups = models.ManyToManyField(
-        Group,
-        related_name='custom_user_set',
-        verbose_name=_('groups'),
-        blank=True,
-        help_text=_('The groups this user belongs to. A user will get all permissions granted to each of their groups.'),
-        related_query_name='custom_user',
-    )
-    
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name='custom_user_set',
-        verbose_name=_('user permissions'),
-        blank=True,
-        help_text=_('Specific permissions for this user.'),
-        related_query_name='custom_user',
-    )
+    objects = CustomUserManager()
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["first_name", "last_name"]

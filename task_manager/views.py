@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from .forms import UserLoginForm
 from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
 
 
 class CustomLoginView(LoginView):
@@ -35,3 +37,4 @@ class CustomLogoutView(LogoutView):
 
 class IndexView(TemplateView):
     template_name = "index.html"
+

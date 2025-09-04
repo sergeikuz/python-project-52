@@ -68,3 +68,4 @@ class CustomUserCreationForm(UserCreationForm):
         if password1 != password2:
             raise ValidationError(_("Passwords didn't match."))
         return password2
+

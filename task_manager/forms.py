@@ -23,3 +23,5 @@ class UserLoginForm(AuthenticationForm):
             "Check the character case."),
         "inactive": _("The account has been deactivated."),
     }
+
+    login_url = 'login'
