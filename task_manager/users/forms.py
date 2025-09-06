@@ -4,7 +4,6 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(
         label=_("Password"),
@@ -68,4 +67,14 @@ class CustomUserCreationForm(UserCreationForm):
         if password1 != password2:
             raise ValidationError(_("Passwords didn't match."))
         return password2
+
+    '''def save(self, commit=True):
+        # Получаем объект пользователя без сохранения в базу
+        user = super().save(commit=False)
+        # Хешируем пароль
+        user.set_password(self.cleaned_data["password1"])
+        # Сохраняем пользователя
+        if commit:
+            user.save()
+        return user'''
 

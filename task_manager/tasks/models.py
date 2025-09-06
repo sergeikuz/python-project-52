@@ -1,10 +1,8 @@
 from django.db import models
 from task_manager.statuses.models import Status
-from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from task_manager.labels.models import Label
-
-User = get_user_model()
+from task_manager.users.models import User
 
 
 class Task(models.Model):
@@ -31,18 +29,18 @@ class Task(models.Model):
         related_name="tasks_executed",
         verbose_name=_("Executor")
     )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name=_("Created at"))
-    updated_at = models.DateTimeField(
-        auto_now=True,
-        verbose_name=_("Updated at"))
     labels = models.ManyToManyField(
         Label,
         related_name="tasks_labels",
         verbose_name=_("Labels"),
         blank=True
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_("Updated at"))
 
     def __str__(self):
         return self.name
