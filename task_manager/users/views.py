@@ -19,7 +19,7 @@ class UserCreateView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'general_form.html'
     success_url = reverse_lazy('login')
-    message_success = _("Account created successfully! You can now log in.")
+    message_success = _("The user has been successfully registered")
     form_title = _("Register User")
     form_submit = _("Register")
 
