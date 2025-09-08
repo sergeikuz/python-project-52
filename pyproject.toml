@@ -19,6 +19,9 @@ dependencies = [
     "whitenoise[brotli]>=6.9.0",
 ]
 
+[tool.setuptools.packages.find]
+include = ["task_manager", "locale"]
+
 [dependency-groups]
 dev = [
     "flake8>=7.3.0",
