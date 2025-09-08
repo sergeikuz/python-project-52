@@ -68,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         super().delete(*args, **kwargs)
 
     def __str__(self):
-        return self.username
+        return f"{self.first_name} {self.last_name}".strip()
     
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
