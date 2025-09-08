@@ -87,7 +87,7 @@ class UserCRUDTestCase(TestCase):
             },
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "уже существует")
+        self.assertContains(response, "already exists")
 
         response = self.client.post(
             self.create_url,
