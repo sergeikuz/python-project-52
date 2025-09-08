@@ -65,6 +65,10 @@ rollbar.init(**ROLLBAR)
 
 INSTALLED_APPS = [
     'task_manager',
+    'task_manager.users',
+    'task_manager.labels',
+    'task_manager.statuses',
+    'task_manager.tasks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -159,7 +163,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-#OUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
