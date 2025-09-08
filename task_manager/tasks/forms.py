@@ -9,6 +9,11 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+class UserModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.get_full_name()
+
+
 class TaskForm(forms.ModelForm):
     name = forms.CharField(
         label=_("Name"),
@@ -24,7 +29,7 @@ class TaskForm(forms.ModelForm):
         empty_label=None,
         widget=forms.Select()
     )
-    executor = forms.ModelChoiceField(
+    executor = UserModelChoiceField(
         queryset=User.objects.all(),
         label=_("Executor"),
         empty_label=None,
