@@ -2,6 +2,11 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
+
+def test_task_create_view(self):
+    activate('ru')
+    # ваш тест
+
 User = get_user_model()
 
 
@@ -73,7 +78,7 @@ class UserCRUDTestCase(TestCase):
         self.assertEqual(len(messages), 1)
         self.assertEqual(
             str(messages[0]),
-            "Account created successfully! You can now log in.")
+            "Пользователь успешно зарегистрирован")
 
     def test_user_create_invalid(self):
         response = self.client.post(
@@ -87,7 +92,7 @@ class UserCRUDTestCase(TestCase):
             },
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "already exists")
+        self.assertContains(response, "уже существует")
 
         response = self.client.post(
             self.create_url,
@@ -105,7 +110,7 @@ class UserCRUDTestCase(TestCase):
         self.assertIn('password2', form.errors)
         self.assertEqual(
             form.errors['password2'][0],
-            "Passwords didn't match."
+            "Пароли не совпадают"
         )
 
     def test_user_update_not_authenticated(self):
@@ -207,6 +212,5 @@ class UserCRUDTestCase(TestCase):
             }
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response, "Password must contain at least 3 characters"
-        )
+        self.assertContains(response, "слишком короткий")
+

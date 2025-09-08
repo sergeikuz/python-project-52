@@ -398,8 +398,6 @@ msgid "User"
 msgstr "Пользователь"
 
 #: task_manager/users/views.py:22
-#, fuzzy
-#| msgid "The status was created successfully"
 msgid "The user has been successfully registered"
 msgstr "Пользователь успешно зарегистрирован"
 

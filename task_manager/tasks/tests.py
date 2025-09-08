@@ -102,7 +102,7 @@ class TaskModelTests(TestCase):
         response = self.client.get(self.task_create_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "general_form.html")
-        self.assertContains(response, "Create")
+        self.assertContains(response, "Создать")
 
         task_data = {
             "name": "New Task",
@@ -183,7 +183,7 @@ class TaskModelTests(TestCase):
         response = self.client.get(self.task_delete_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "general_delete_form.html")
-        self.assertContains(response, "Yes, delete")
+        self.assertContains(response, "Да, удалить")
 
         response = self.client.post(self.task_delete_url)
         self.assertEqual(response.status_code, 302)
