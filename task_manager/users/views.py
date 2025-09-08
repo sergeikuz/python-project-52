@@ -63,7 +63,7 @@ class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
     template_name = 'general_delete_form.html'
     success_url = reverse_lazy('users:user_list')
     message_warning_perm = _("You do not have permission to edit this user.")
-    message_success = _("Profile deleted successfully!")
+    message_success = _("User successfully deleted")
     message_perm = _(
         'It is not possible to delete a user because it is being used'
     )
