@@ -19,8 +19,11 @@ dependencies = [
     "whitenoise[brotli]>=6.9.0",
 ]
 
-[tool.setuptools.packages.find]
-include = ["task_manager", "locale"]
+[tool.setuptools]
+packages = ["task_manager", "task_manager.labels", "task_manager.statuses", "task_manager.tasks", "task_manager.users", "task_manager.tests"]
+
+[tool.uv]
+package = true
 
 [dependency-groups]
 dev = [
