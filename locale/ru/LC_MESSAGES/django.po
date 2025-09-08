@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-08 16:28+0000\n"
+"POT-Creation-Date: 2025-09-08 17:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -414,8 +414,8 @@ msgid "You do not have permission to edit this user."
 msgstr "У вас нет прав на редактирование этого пользователя."
 
 #: task_manager/users/views.py:38
-msgid "Profile updated successfully!"
-msgstr "Профиль успешно изменен!"
+msgid "User successfully edited"
+msgstr "Пользователь успешно изменен"
 
 #: task_manager/users/views.py:39 task_manager/users/views.py:70
 msgid "You are not registered ! Please log in"
@@ -436,6 +436,9 @@ msgstr "Удалить пользователя невозможно, поско
 #: task_manager/users/views.py:71
 msgid "Delete user"
 msgstr "Удалить пользователя"
+
+#~ msgid "Profile updated successfully!"
+#~ msgstr "Профиль успешно изменен!"
 
 #~ msgid "Account created successfully! You can now log in."
 #~ msgstr "Учетная запись успешно создана! Теперь вы можете войти в систему."

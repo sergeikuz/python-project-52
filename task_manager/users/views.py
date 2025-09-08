@@ -35,7 +35,7 @@ class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
     template_name = 'general_form.html'
     success_url = reverse_lazy('users:user_list')
     message_warning_perm = _("You do not have permission to edit this user.")
-    message_success = _("Profile updated successfully!")
+    message_success = _("User successfully edited")
     message_warning_log = _("You are not registered ! Please log in")
     form_title = _("Edit User")
     form_submit = _("Edit")
