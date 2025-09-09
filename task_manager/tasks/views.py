@@ -83,6 +83,11 @@ class TaskDeleteView(
             return redirect(self.success_url)
         messages.error(self.request, self.permission_denied_message)
         return super().handle_no_permission()
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, self.success_delete_message)
+        return response
 
 
 class TaskDetailView(CustomLoginRequiredMixin, DetailView):
