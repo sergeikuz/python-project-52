@@ -34,7 +34,7 @@ class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
     form_class = CustomUserCreationForm
     template_name = 'general_form.html'
     success_url = reverse_lazy('users:user_list')
-    message_warning_perm = _("You do not have permission to edit this user.")
+    message_warning_perm = _("You don't have the rights to change it.")
     message_success = _("User successfully edited")
     message_warning_log = _("You are not registered ! Please log in")
     form_title = _("Edit User")
@@ -62,7 +62,7 @@ class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
     model = User
     template_name = 'general_delete_form.html'
     success_url = reverse_lazy('users:user_list')
-    message_warning_perm = _("You do not have permission to edit this user.")
+    message_warning_perm = _("You don't have the rights to change it.")
     message_success = _("User successfully deleted")
     message_perm = _(
         'It is not possible to delete a user because it is being used'
