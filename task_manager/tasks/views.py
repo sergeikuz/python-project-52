@@ -39,17 +39,9 @@ class TaskCreateView(CustomLoginRequiredMixin, CreateView):
     form_title = _("Create task")
     form_submit = _("Create")
 
-    '''def form_valid(self, form):
+    def form_valid(self, form):
         form.instance.owner = self.request.user
         messages.success(self.request, self.success_message)
-        return super().form_valid(form)'''
-
-    def form_valid(self, form):
-        # Вывод отладочной информации
-        print(f"Status: {form.cleaned_data['status']}")
-        print(f"Executor: {form.cleaned_data['executor']}")
-        print(f"Labels: {form.cleaned_data['labels']}")
-        form.instance.owner = self.request.user
         return super().form_valid(form)
 
 
