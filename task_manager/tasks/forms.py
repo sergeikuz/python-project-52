@@ -50,7 +50,7 @@ class TaskForm(forms.ModelForm):
 class TaskFilter(django_filters.FilterSet):
     my_tasks = django_filters.BooleanFilter(
         field_name='owner',
-        label=_("Show only my tasks"),
+        label=_("Only my tasks"),
         method='filter_my_tasks',
         widget=forms.CheckboxInput(),
     )
