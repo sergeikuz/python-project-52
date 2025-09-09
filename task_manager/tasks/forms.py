@@ -47,7 +47,20 @@ class TaskForm(forms.ModelForm):
         fields = ["name", "description", "status", "executor", "labels"]
 
 
+class UserModelChoiceFilter(django_filters.ModelChoiceFilter):
+    field_class = UserModelChoiceField
+
+
 class TaskFilter(django_filters.FilterSet):
+    executor = UserModelChoiceFilter(
+        queryset=User.objects.all(),
+        label=_('Executor'),
+        required=False
+    )
+    labels = django_filters.ModelChoiceFilter(
+        queryset=Label.objects.all(),
+        label=_('Label'),
+        required=False)
     my_tasks = django_filters.BooleanFilter(
         field_name='owner',
         label=_("Only my tasks"),
