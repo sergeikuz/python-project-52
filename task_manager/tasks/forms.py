@@ -6,6 +6,7 @@ from task_manager.labels.models import Label
 import django_filters
 from django.contrib.auth import get_user_model
 
+
 User = get_user_model()
 
 

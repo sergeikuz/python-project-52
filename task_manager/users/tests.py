@@ -3,10 +3,6 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 
 
-def test_task_create_view(self):
-    activate('ru')
-    # ваш тест
-
 User = get_user_model()
 
 
@@ -213,4 +209,3 @@ class UserCRUDTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "слишком короткий")
-

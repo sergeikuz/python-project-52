@@ -53,7 +53,7 @@ class LabelDeleteView(
     success_delete_message = _("Label deleted successfully")
     message_warning_perm = _("Label is in use and cannot be deleted.")
     form_title = _("Delete label")
- 
+
     def form_valid(self, form):
         self.object = self.get_object()
         try:

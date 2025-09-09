@@ -18,9 +18,9 @@ class Label(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def can_delete(self):
-        return not  self.tasks_labels.exists()
+        return not self.tasks_labels.exists()
 
     def delete(self, *args, **kwargs):
         if not self.can_delete():
