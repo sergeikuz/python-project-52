@@ -9,6 +9,9 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
 
 
+SUCCESS_URL = "labels:labels_index"
+
+
 class LabelListView(CustomLoginRequiredMixin, ListView):
     model = Label
     template_name = "labels/labels_index.html"
@@ -19,7 +22,7 @@ class LabelCreateView(CustomLoginRequiredMixin, CreateView):
     model = Label
     form_class = LabelForm
     template_name = 'general_form.html'
-    success_url = reverse_lazy("labels:labels_index")
+    success_url = reverse_lazy(SUCCESS_URL)
     success_message = _("Label created successfully")
     form_title = _("Create label")
     form_submit = _("Create")
@@ -32,7 +35,7 @@ class LabelCreateView(CustomLoginRequiredMixin, CreateView):
 class LabelUpdateView(CustomLoginRequiredMixin, UpdateView):
     model = Label
     form_class = LabelForm
-    success_url = reverse_lazy("labels:labels_index")
+    success_url = reverse_lazy(SUCCESS_URL)
     template_name = 'general_form.html'
     success_message = _("Label updated successfully")
     form_title = _("Edit label")
@@ -49,7 +52,7 @@ class LabelDeleteView(
 ):
     model = Label
     template_name = 'general_delete_form.html'
-    success_url = reverse_lazy("labels:labels_index")
+    success_url = reverse_lazy(SUCCESS_URL)
     success_delete_message = _("Label deleted successfully")
     message_warning_perm = _("Label is in use and cannot be deleted.")
     form_title = _("Delete label")

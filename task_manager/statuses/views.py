@@ -9,6 +9,9 @@ from task_manager.mixins import CustomLoginRequiredMixin
 from django.core.exceptions import ValidationError
 
 
+SUCCESS_URL = "statuses:statuses_index"
+
+
 class StatusesIndexView(CustomLoginRequiredMixin, ListView):
     model = Status
     template_name = "statuses/statuses_index.html"
@@ -18,7 +21,7 @@ class StatusesIndexView(CustomLoginRequiredMixin, ListView):
 class StatusesCreateView(CustomLoginRequiredMixin, CreateView):
     form_class = StatusForm
     template_name = 'general_form.html'
-    success_url = reverse_lazy("statuses:statuses_index")
+    success_url = reverse_lazy(SUCCESS_URL)
     success_message = _("The status was created successfully")
     form_title = _("Create status")
     form_submit = _("Create")
@@ -33,7 +36,7 @@ class StatusesUpdateView(CustomLoginRequiredMixin, UpdateView):
     form_class = StatusForm
     model = Status
     template_name = 'general_form.html'
-    success_url = reverse_lazy("statuses:statuses_index")
+    success_url = reverse_lazy(SUCCESS_URL)
     success_message = _("The status was updated successfully")
     form_title = _("Edit stutus")
     form_submit = _("Edit")
@@ -50,7 +53,7 @@ class StatusesDeleteView(
 ):
     model = Status
     template_name = 'general_delete_form.html'
-    success_url = reverse_lazy("statuses:statuses_index")
+    success_url = reverse_lazy(SUCCESS_URL)
     success_delete_message = _("The status was deleted successfully")
     error_delete_message = _("Cannot delete status because it is in use.")
     form_title = _("Delete status")

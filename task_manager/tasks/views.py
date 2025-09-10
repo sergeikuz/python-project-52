@@ -15,6 +15,9 @@ from task_manager.mixins import CustomLoginRequiredMixin
 from django_filters.views import FilterView
 
 
+SUCCESS_URL = "tasks:tasks_index"
+
+
 class TaskListView(CustomLoginRequiredMixin, FilterView):
     model = Task
     template_name = "tasks/tasks_index.html"
@@ -34,7 +37,7 @@ class TaskCreateView(CustomLoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
     template_name = 'general_form.html'
-    success_url = reverse_lazy("tasks:tasks_index")
+    success_url = reverse_lazy(SUCCESS_URL)
     success_message = _("Task created successfully")
     form_title = _("Create task")
     form_submit = _("Create")
@@ -49,7 +52,7 @@ class TaskUpdateView(CustomLoginRequiredMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = 'general_form.html'
-    success_url = reverse_lazy("tasks:tasks_index")
+    success_url = reverse_lazy(SUCCESS_URL)
     success_message = _("Task updated successfully")
     form_title = _("Edit task")
     form_submit = _("Edit")
@@ -67,7 +70,7 @@ class TaskDeleteView(
 ):
     model = Task
     template_name = 'general_delete_form.html'
-    success_url = reverse_lazy("tasks:tasks_index")
+    success_url = reverse_lazy(SUCCESS_URL)
     success_delete_message = _("Task successfully deleted")
     permission_denied_message = _("A task can only be deleted by its author")
     form_title = _("Delete task")
