@@ -9,6 +9,8 @@ from django.db.models import ProtectedError
 from .forms import CustomUserCreationForm
 
 
+SUCCESS_URL = 'users:user_list'
+
 class UserListView(ListView):
     model = User
     template_name = 'users/user_list.html'
@@ -33,7 +35,7 @@ class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
     model = User
     form_class = CustomUserCreationForm
     template_name = 'general_form.html'
-    success_url = reverse_lazy('users:user_list')
+    success_url = reverse_lazy(SUCCESS_URL)
     message_warning_perm = _("You don't have the rights to change it.")
     message_success = _("User successfully edited")
     message_warning_log = _("You are not registered ! Please log in")
@@ -44,9 +46,9 @@ class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
         if not request.user.is_authenticated:
             messages.error(self.request, self.message_warning_log)
             return redirect('login')
-        elif not self.get_object() == request.user:
+        elif self.get_object() != request.user:
             messages.error(self.request, self.message_warning_perm)
-            return redirect('users:user_list')
+            return redirect(SUCCESS_URL)
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -61,7 +63,7 @@ class UserUpdateView(CustomLoginRequiredMixin, UpdateView):
 class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
     model = User
     template_name = 'general_delete_form.html'
-    success_url = reverse_lazy('users:user_list')
+    success_url = reverse_lazy(SUCCESS_URL)
     message_warning_perm = _("You don't have the rights to change it.")
     message_success = _("User successfully deleted")
     message_perm = _(
@@ -74,9 +76,9 @@ class UserDeleteView(CustomLoginRequiredMixin, DeleteView):
         if not request.user.is_authenticated:
             messages.error(self.request, self.message_warning_log)
             return redirect('login')
-        elif not self.get_object() == request.user:
+        elif self.get_object() != request.user:
             messages.error(self.request, self.message_warning_perm)
-            return redirect('users:user_list')
+            return redirect(SUCCESS_URL)
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
