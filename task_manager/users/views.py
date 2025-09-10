@@ -11,6 +11,7 @@ from .forms import CustomUserCreationForm
 
 SUCCESS_URL = 'users:user_list'
 
+
 class UserListView(ListView):
     model = User
     template_name = 'users/user_list.html'
