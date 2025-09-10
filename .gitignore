@@ -9,6 +9,5 @@ media
 *.py[cod]
 *$py.class
 *.so
-setup.cfg
 .env
 *.egg-info
