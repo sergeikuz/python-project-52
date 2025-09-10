@@ -1,0 +1,54 @@
+# Name of workflow
+name: Continuous Integration
+# on – определяет события, которые запускают воркфлоу
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+    # lint-test-and-sonar – произвольно выбранное имя задания
+    # их может быть больше одного
+  lint-test-and-sonar:
+    # операционная система для работы воркфлоу
+    runs-on: ubuntu-latest
+    
+    steps:  # список шагов, которые надо выполнить
+    # экшен — выполняет какую-то задачу
+    # checkout — клонирует репозиторий
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+     # Step's name
+    - name: Set up Python Environment
+        # Configures the Python version used on GitHub-hosted runners
+        # https://github.com/actions/setup-python
+        # Устанавливаем Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+    
+    - name: Install Dependencies
+    # pip install uv – произвольная команда
+      run: |
+        pip install uv
+        make install
+    
+    - name: Run Linter
+      run: |
+        make lint
+        
+   # - name: Run Tests with Coverage
+    #  run: |
+    #    make coverage
+     # env:
+      #  DJANGO_SETTINGS_MODULE: task_manager.tests.settings_test
+        
+    #- name: SonarQube Scan
+     # uses: SonarSource/sonarqube-scan-action@v4
+    #  env:
+     #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+     #   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+     # if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository

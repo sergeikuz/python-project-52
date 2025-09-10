@@ -25,3 +25,5 @@ shell:
 	uv run python3 manage.py shell_plus --ipython
 test:
 	uv run python3 manage.py test
+coverage:
+	uv run pytest --cov=task_manager --cov-report=xml --cov-report=term
