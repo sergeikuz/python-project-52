@@ -8,7 +8,7 @@ from task_manager.statuses.models import Status
 User = get_user_model()
 
 
-class LabelTest(TestCase):
+class TestLabel(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             first_name="test",
