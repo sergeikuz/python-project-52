@@ -8,7 +8,7 @@
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=sergeikuz_python-project-52&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=sergeikuz_python-project-52)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=sergeikuz_python-project-52&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=sergeikuz_python-project-52)
 
-[Please visit my Page analyzer on render.com](https://python-project-52-i3tm.onrender.com)
+[Please visit my Task manager on render.com](https://python-project-52-i3tm.onrender.com)
 
 ### Description
 A Django-based task management system that allows users to create, track, and manage tasks with statuses and labels.
