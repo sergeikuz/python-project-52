@@ -70,41 +70,41 @@ DATABASE_URL=postgres://user:password@localhost:5432/dbname
 ```
 ### Technology Stack
 #### Backend
-Python 3.10+: Modern Python version with enhanced features
-Django 5.2: Latest stable Django framework for robust web development
-Django ORM: Sophisticated object-relational mapping for database interactions
-PostgreSQL: Production-grade relational database for data reliability
-SQLite: Lightweight database for development and testing
+- Python 3.10+: Modern Python version with enhanced features
+- Django 5.2: Latest stable Django framework for robust web development
+- Django ORM: Sophisticated object-relational mapping for database interactions
+- PostgreSQL: Production-grade relational database for data reliability
+- SQLite: Lightweight database for development and testing
 
 #### Frontend
-HTML5: Modern markup language for web content
-Bootstrap 5: Responsive design framework with modern UI components
-Django Templates: Server-side rendering with Django's template engine
+- HTML5: Modern markup language for web content
+- Bootstrap 5: Responsive design framework with modern UI components
+- Django Templates: Server-side rendering with Django's template engine
 
 ### Security
-Authentication System: Django's built-in authentication system with custom user model
-Permission Checks: Custom mixins ensuring proper access control
-CSRF Protection: Cross-Site Request Forgery protection
-Environment Variables: Secure configuration using environment variables
-Password Hashing: Secure password storage with Django's authentication system
+- Authentication System: Django's built-in authentication system with custom user model
+- Permission Checks: Custom mixins ensuring proper access control
+- CSRF Protection: Cross-Site Request Forgery protection
+- Environment Variables: Secure configuration using environment variables
+- Password Hashing: Secure password storage with Django's authentication system
 
 ### Testing
-Django Test Framework: Comprehensive testing tools for Django applications
-Pytest: Advanced testing framework for Python
-Coverage Reports: Test coverage analysis to ensure code quality
+- Django Test Framework: Comprehensive testing tools for Django applications
+- Pytest: Advanced testing framework for Python
+- Coverage Reports: Test coverage analysis to ensure code quality
 
 ### CI/CD
-GitHub Actions: Automated testing, linting, and deployment workflows
-SonarQube Integration: Code quality and security analysis
+- GitHub Actions: Automated testing, linting, and deployment workflows
+- SonarQube Integration: Code quality and security analysis
 
 ### Monitoring & Error Tracking
-Rollbar: Real-time error tracking and monitoring
+- Rollbar: Real-time error tracking and monitoring
 
 ### Development Tools
-Makefile: Project automation for common tasks
-UV: Modern dependency management for Python
-Flake8: Code linting to maintain code quality
-Whitenoise: Static file serving for production
-Gunicorn: Production-ready WSGI server
+- Makefile: Project automation for common tasks
+- UV: Modern dependency management for Python
+- Flake8: Code linting to maintain code quality
+- Whitenoise: Static file serving for production
+- Gunicorn: Production-ready WSGI server
 
 ### Good luck and have a fun!) 🤚
