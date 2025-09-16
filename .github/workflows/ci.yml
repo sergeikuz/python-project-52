@@ -53,15 +53,3 @@ jobs:
       uses: SonarSource/sonarqube-scan-action@v5
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        # - name: Run Tests with Coverage
-    #  run: |
-    #    make coverage
-     # env:
-      #  DJANGO_SETTINGS_MODULE: task_manager.tests.settings_test
-        
-    #- name: SonarQube Scan
-     # uses: SonarSource/sonarqube-scan-action@v4
-    #  env:
-     #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-     #   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-     # if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
