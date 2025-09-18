@@ -1,6 +1,4 @@
-# Name of workflow
 name: Continuous Integration
-# on – определяет события, которые запускают воркфлоу
 on:
   push:
     branches: [ main, master ]
@@ -8,30 +6,20 @@ on:
     branches: [ main, master ]
 
 jobs:
-    # lint-test-and-sonar – произвольно выбранное имя задания
-    # их может быть больше одного
   lint-test-and-sonar:
-    # операционная система для работы воркфлоу
     runs-on: ubuntu-latest
     
-    steps:  # список шагов, которые надо выполнить
-    # экшен — выполняет какую-то задачу
-    # checkout — клонирует репозиторий
-    - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-     # Step's name
     - name: Set up Python Environment
-        # Configures the Python version used on GitHub-hosted runners
-        # https://github.com/actions/setup-python
-        # Устанавливаем Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.13'
     
     - name: Install Dependencies
-    # pip install uv – произвольная команда
       run: |
         pip install uv
         make install
