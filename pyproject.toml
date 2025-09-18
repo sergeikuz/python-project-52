@@ -29,6 +29,4 @@ packages = ["task_manager", "task_manager.labels", "task_manager.statuses", "tas
 package = true
 
 [dependency-groups]
-dev = [
-    "flake8>=7.3.0",
-]
+dev = []
