@@ -16,7 +16,9 @@ migrate:
 	uv run python3 manage.py migrate
 
 lint:
-	uv run flake8 task_manager
+	uv run ruff check
+lint-fix: 	
+	uv run ruff check --fix
 
 run:
 	uv run python3 manage.py runserver

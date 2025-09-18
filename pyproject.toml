@@ -29,4 +29,6 @@ packages = ["task_manager", "task_manager.labels", "task_manager.statuses", "tas
 package = true
 
 [dependency-groups]
-dev = []
+dev = [
+    "ruff>=0.13.0",
+]
