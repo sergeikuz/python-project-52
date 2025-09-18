@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
-
+    
     - name: Set up Python Environment
       uses: actions/setup-python@v4
       with:
@@ -34,6 +34,7 @@ jobs:
     
     - name: Make test pytest
       run: make test-pytest
+    
     - name: Make test pytest --coverage
       run: make test-coverage
 
@@ -41,4 +42,3 @@ jobs:
       uses: SonarSource/sonarqube-scan-action@v5
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
