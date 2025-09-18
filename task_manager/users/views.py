@@ -1,13 +1,14 @@
-from django.urls import reverse_lazy
-from django.shortcuts import redirect
-from .models import User
-from task_manager.mixins import CustomLoginRequiredMixin
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib import messages
-from django.utils.translation import gettext_lazy as _
 from django.db.models import ProtectedError
-from .forms import CustomUserCreationForm
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
+from task_manager.mixins import CustomLoginRequiredMixin
+
+from .forms import CustomUserCreationForm
+from .models import User
 
 SUCCESS_URL = 'users:user_list'
 

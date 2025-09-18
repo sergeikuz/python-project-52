@@ -3,6 +3,7 @@ Test settings for Django tests
 """
 
 from pathlib import Path
+
 from task_manager.settings import *  # noqa: F403 F401
 
 # Define BASE_DIR similar to main settings

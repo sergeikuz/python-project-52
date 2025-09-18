@@ -1,13 +1,14 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from .models import Label
 from django.contrib import messages
-from django.utils.translation import gettext_lazy as _
-from .forms import LabelForm
-from task_manager.mixins import CustomLoginRequiredMixin
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
+from task_manager.mixins import CustomLoginRequiredMixin
+
+from .forms import LabelForm
+from .models import Label
 
 SUCCESS_URL = "labels:labels_index"
 

@@ -1,13 +1,14 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.shortcuts import redirect
-from .models import Status
-from .forms import StatusForm
-from django.contrib import messages
-from task_manager.mixins import CustomLoginRequiredMixin
-from django.core.exceptions import ValidationError
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
+from task_manager.mixins import CustomLoginRequiredMixin
+
+from .forms import StatusForm
+from .models import Status
 
 SUCCESS_URL = "statuses:statuses_index"
 
