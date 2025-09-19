@@ -1,9 +1,9 @@
 name: Continuous Integration
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   lint-test-and-sonar:
@@ -25,12 +25,10 @@ jobs:
         make install
     
     - name: Run Linter
-      run: |
-        make lint
+      run: make lint
 
     - name: Run Tests
-      run: |
-        make test
+      run: make test
     
     - name: Make test pytest
       run: make test-pytest
@@ -38,12 +36,12 @@ jobs:
     - name: Make test pytest --coverage
       run: make test-coverage
 
-    - name: SonarQubeScan
+    - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@v5
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
+      with:
         args: >
-            -Dsonar.projectKey=sergeikuz_python-project-52
-            -Dsonar.organization=sergeikuz
-            -Dsonar.python.coverage.reportPaths=coverage.xml
+          -Dsonar.projectKey=sergeikuz_python-project-52
+          -Dsonar.organization=sergeikuz
+          -Dsonar.python.coverage.reportPaths=coverage.xml
